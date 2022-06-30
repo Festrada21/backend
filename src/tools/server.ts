@@ -13,6 +13,7 @@ private port: string;
   //TODO configuracion del endpoint del api
 private apiPaths = {
     catalogopais: "/api/catalogopais",
+    auth_singup: '/auth//singup'
 };
 
 constructor() {
@@ -58,6 +59,7 @@ middlewares() {
 
 routes() {
     this.app.use(this.apiPaths.catalogopais, userRouter);
+    this.app.use(this.apiPaths.auth_singup, userRouter);
 }
   //TODO: metodo para escuchar el puerto
 listen() {

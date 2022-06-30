@@ -24,6 +24,7 @@ class Server {
         //TODO configuracion del endpoint del api
         this.apiPaths = {
             catalogopais: "/api/catalogopais",
+            auth_singup: '/auth//singup'
         };
         this.app = (0, express_1.default)();
         //TODO || es el operador or
@@ -60,6 +61,7 @@ class Server {
     }
     routes() {
         this.app.use(this.apiPaths.catalogopais, CatalogoPais_1.default);
+        this.app.use(this.apiPaths.auth_singup, CatalogoPais_1.default);
     }
     //TODO: metodo para escuchar el puerto
     listen() {

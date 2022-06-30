@@ -76,7 +76,7 @@ const singIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.singIn = singIn;
 const profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield usuarios_1.default.findByPk(req.params.id);
+    const user = yield usuarios_1.default.findByPk(req.userid);
     if (!user)
         return res.status(404).json({ msg: "Usuario no encontrado" });
     const user2 = usuarios_1.default.build({ contraseña: '0' });
