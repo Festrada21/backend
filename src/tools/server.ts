@@ -1,7 +1,7 @@
 //TODO: se crea la carpeta contenedora de los archivos de la base de datos
 //TODO: se crea la clase del servidor y se debe de crear el constructor
 import express, { Application } from "express";
-import userRouter from "../routes/catalogopais_routes";
+import userRouter from "../routes/CatalogoPais";
 import cors from "cors";
 import morgan from "morgan";
 

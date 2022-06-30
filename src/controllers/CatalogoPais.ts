@@ -1,17 +1,28 @@
 import { Request, Response } from "express";
-import Pais from "../models/catalogopais_model";
+import Pais from "../models/CatalogoPais";
+
 
 //TODO: crear los controladores
-export const getCatalogopaises = async (res: Response) => {
+export const GETCPS = async (req: Request, res: Response) => {
     const pais = await Pais.findAll({
         where: {
             Habilitado: true,
         },
     });
-    res.json({ pais});
+    const habilitados = await Pais.count({
+        where: {
+            Habilitado: true,
+        },
+    });
+    const deshabilitados = await Pais.count({
+        where: {
+            Habilitado: false,
+        },
+    });
+    res.json({ pais, habilitados, deshabilitados });
 };
 
-export const getCatalogopais = async (req: Request, res: Response) => {
+export const GETCP = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const pais = await Pais.findByPk(id);
@@ -22,7 +33,7 @@ export const getCatalogopais = async (req: Request, res: Response) => {
     }
 };
 
-export const postCatalogopais = async (req: Request, res: Response) => {
+export const POSTCP = async (req: Request, res: Response) => {
     const { body } = req;
     try {
         const existe = await Pais.findOne({
@@ -44,7 +55,7 @@ export const postCatalogopais = async (req: Request, res: Response) => {
     }
 };
 
-export const putCatalogopais = async (req: Request, res: Response) => {
+export const PUTCP = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { body } = req;
     try {
@@ -60,8 +71,24 @@ export const putCatalogopais = async (req: Request, res: Response) => {
     }
 };
 
+export const PUTCPH = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+        await Pais.findByPk(id).then((pais) => {
+            if (!pais) {
+                return res.status(404).json({ msg: `Pais no encontrado, id ${id}` });
+            }
+            pais.update({ Habilitado: 1 });
+            res.json(pais).status(200);
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ msg: "Error al habilitar" });
+    }
+};
+
 //TODO: eliminacion fisica de un registro
-export const deleteCatalogopais = async (req: Request, res: Response) => {
+export const PUTCPD = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const pais = await Pais.findByPk(id);
@@ -69,9 +96,9 @@ export const deleteCatalogopais = async (req: Request, res: Response) => {
         return res.status(404).json({ msg: `Pais no encontrado, id ${id}` });
     }
 
-    await pais.update({ Habilitado: false });
+    await pais.update({ Habilitado: 0 });
     //TODO: eliminar el registro fisico
     //await pais.destroy();
 
     res.json(pais);
-}; 
+};
